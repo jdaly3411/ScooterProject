@@ -48,3 +48,43 @@ class Scooter {
 }
 // So this can be refrenced elsewhere (the tests)
 module.exports = Scooter;
+
+// +-------------------------+
+// |        Scooter          |
+// +-------------------------+
+// | - station: string       |
+// | - user: User            |
+// | - serial: number        |
+// | - charge: number        |
+// | - isBroken: boolean     |
+// | - nextSerial: static    |
+// +-------------------------+
+// | + constructor(station)  |
+// | + rent(user: User): void|
+// | + dock(station: string): void |
+// | + recharge(): void      |
+// | + requestRepair(): void |
+// +-------------------------+
+
+// +------------------------+
+// |        User            |
+// +------------------------+
+// | - login()              |
+// | - logout()             |
+// | - rentScooter()        |
+// | - returnScooter()      |
+// | - register()           |
+// +------------------------+
+//            |
+//            v
+// +------------------------+
+// |      ScooterApp       |
+// +------------------------+
+// | + registerUser()      |
+// | + loginUser()         |
+// | + logoutUser()        |
+// | + createScooter()     |
+// | + rentScooter()       |
+// | + dockScooter()       |
+// | + print()             |
+// +------------------------+
