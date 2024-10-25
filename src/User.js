@@ -19,3 +19,4 @@ class User {
     console.log(`${this.username} logged out`);
   }
 }
+module.exports = User;
