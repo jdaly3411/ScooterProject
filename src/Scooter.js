@@ -46,5 +46,5 @@ class Scooter {
     console.log("Repair Completed");
   }
 }
-
+// So this can be refrenced elsewhere (the tests)
 module.exports = Scooter;
