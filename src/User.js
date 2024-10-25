@@ -9,13 +9,11 @@ class User {
   }
   // Function for logging in and using password
   login(password) {
-    if (password === this.password) {
-      // Checking the password is equal the password
-      this.loggedIn = true;
-      console.log(`${this.username} logged in`); // Console Logging the user that is logged in
-    } else {
-      throw new Error("Incorrect password"); // Throwing an error for incorrect password
+    if (this.password === password) {
+      this.loggedIn = true; // Set loggedIn to true upon successful login
+      return true; // Return true if login is successful
     }
+    return false; // Return false if login fails
   }
 
   logout() {

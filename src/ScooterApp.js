@@ -31,7 +31,7 @@ class ScooterApp {
   }
 
   loginUser(username, password) {
-    // get the registered user by username
+    // Get the registered user by username
     const user = this.registeredUsers[username];
     if (!user || !user.login(password)) {
       throw new Error("Username or password is incorrect");
@@ -40,13 +40,12 @@ class ScooterApp {
   }
 
   logoutUser(username) {
-    // get the registered user and log them out
     const user = this.registeredUsers[username];
-    if (!user) {
+    if (!user || !user.loggedIn) {
       throw new Error("No such user is logged in");
     }
-    user.logout();
-    console.log(`User ${username} logged out successfully.`);
+    user.loggedIn = false; // Set user to logged out
+    console.log(`${username} logged out successfully.`);
   }
 
   createScooter(station) {
@@ -63,38 +62,54 @@ class ScooterApp {
   }
 
   dockScooter(scooter, station) {
-    // Check if the station exists and the scooter is not already docked
+    // Check if the station exists
     if (!this.stations[station]) {
       throw new Error("No such station");
     }
+    // Check if the scooter is already docked at the specified station
     if (scooter.station === station) {
       throw new Error("Scooter already at station");
     }
 
-    // Dock the scooter
+    // If the scooter has a current station, remove it from that station's array
+    if (scooter.station) {
+      const currentStation = this.stations[scooter.station];
+      const scooterIndex = currentStation.indexOf(scooter);
+      if (scooterIndex !== -1) {
+        currentStation.splice(scooterIndex, 1); // Remove from the current station
+      }
+    }
+
+    // Dock the scooter at the new station
     scooter.dock(station);
-    this.stations[station].push(scooter);
+    this.stations[station].push(scooter); // Add to the new station's array
     console.log(`Scooter docked at ${station}.`);
   }
 
   rentScooter(scooter, user) {
-    // Check if the scooter is available to rent
-    const stationScooters = this.stations[scooter.station];
-    if (!stationScooters || !stationScooters.includes(scooter)) {
-      throw new Error("Scooter not available at station");
+    // Check if the user is logged in
+    if (!user.loggedIn) {
+      throw new Error("User must be logged in to rent a scooter");
+    }
+    // Check if the scooter is available
+    const station = this.stations[scooter.station];
+    const scooterIndex = station.indexOf(scooter);
+
+    if (scooterIndex === -1) {
+      throw new Error("Scooter not available at the station");
     }
 
-    // Rent the scooter to the user
-    scooter.rent(user);
-    console.log(`Scooter rented to ${user.username}.`);
+    // Rent the scooter
+    scooter.rent(user); // Assuming this sets scooter.user
+    station.splice(scooterIndex, 1); // Remove the scooter from the station's list
+    console.log(`${user.username} rented a scooter from ${scooter.station}.`);
   }
 
   print() {
-    // Log the list of registered users
     console.log("Registered Users:");
-    console.log(Object.keys(this.registeredUsers));
-
-    // Log the stations and the number of scooters at each station
+    for (const user of Object.values(this.registeredUsers)) {
+      console.log(user.username); // Print each username individually
+    }
     console.log("Stations and Scooter Count:");
     for (const station in this.stations) {
       console.log(`${station}: ${this.stations[station].length} scooters`);
