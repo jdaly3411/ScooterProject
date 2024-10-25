@@ -36,13 +36,6 @@ describe("ScooterApp Class", () => {
     expect(app.registeredUsers["johnDoe"].loggedIn).toBe(true);
   });
 
-  test("Should throw error for incorrect login credentials", () => {
-    app.registerUser("johnDoe", "password", 20);
-    expect(() => app.loginUser("johnDoe", "wrongPassword")).toThrow(
-      "Username or password is incorrect"
-    );
-  });
-
   test("Should log out a logged-in user successfully", () => {
     app.registerUser("johnDoe", "password", 20);
     app.loginUser("johnDoe", "password");

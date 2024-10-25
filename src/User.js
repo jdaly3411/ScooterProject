@@ -1,25 +1,27 @@
 // Making a user class
 class User {
-  // Using the constructor gives parameters for the user
   constructor(username, password, age) {
     this.username = username;
-    this.password = password;
+    this.password = password; // Store the password securely in a real app
     this.age = age;
     this.loggedIn = false;
   }
-  // Function for logging in and using password
+
   login(password) {
-    if (this.password === password) {
-      this.loggedIn = true; // Set loggedIn to true upon successful login
-      return true; // Return true if login is successful
+    if (this.password !== password) {
+      throw new Error("Incorrect password"); // Ensure an error is thrown for wrong password
     }
-    return false; // Return false if login fails
+    this.loggedIn = true; // Set loggedIn to true if the password is correct
+    return this.loggedIn;
   }
 
   logout() {
-    this.loggedIn = false;
-    console.log(`${this.username} logged out`); // Loggin the user out and logging it to console.
+    if (!this.loggedIn) {
+      throw new Error("User not logged in");
+    }
+    this.loggedIn = false; // Set loggedIn to false when logging out
   }
 }
+
 //Exporting it to be referenced in the tests
 module.exports = User;
